@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hello Bulma!</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script>
+      function stringToJSON () {
+        var dhuski = document.getElementById("textArea").value
+        console.log(dhuski)
+      }
+    </script>
+  </head>
+  <body>
+  <section class="section">
+    <div class="container">
+      <h1 class="title">
+        JSON Maker
+      </h1>
+      <p class="subtitle">
+        Enter blogger image string <strong>below</strong>!
+      </p>
+      <div class="control">
+          <textarea id="textArea" rows="10" class="textarea is-hovered" placeholder="Enter blogger HTML text"></textarea>
+      </div>
+      </br>
+      <a onclick="stringToJSON()" class="button is-success is-large">
+          <span class="icon is-small">
+            <i class="fas fa-check"></i>
+          </span>
+          <span>Get JSON</span>
+        </a>
+    </div>
+  </section>
+  </body>
+</html>
