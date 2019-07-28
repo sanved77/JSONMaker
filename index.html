@@ -3,44 +3,70 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Hello Bulma!</title>
+    <title>JSON Maker</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <script>
       function stringToJSON () {
-        var textArea = document.getElementById("textArea")
-        var arrayOfLines = textArea.value.split("\n")
-        var arrayOfHrefs = new Array()
-        var arrayOfLinks = new Array()
-        for(var i = 2; i < arrayOfLines.length ; i+=3){
-          arrayOfHrefs.push(arrayOfLines[i])
-        }
-        var linkOn = false
-        arrayOfHrefs.pop()
-        arrayOfHrefs.forEach(element => {
-          var link = ""
-          for(var j = 0; j < element.length; j++){
-            var c = element[j]
-            if(linkOn && c !== "\"") {
-              link += c
-            }
-            if(c === "\"") {
-              if(linkOn === true) linkOn = false;
-              else linkOn = true
-              if(linkOn === false) break
-            }
+        if(document.getElementById("fname").value === "" && document.getElementById("textArea").value === ""){
+          document.getElementById("errMsg").innerHTML = "Please enter blogger data and filename"
+        } else if(document.getElementById("fname").value === ""){
+          document.getElementById("errMsg").innerHTML = "Enter the filename"
+        } else if(document.getElementById("textArea").value === ""){
+          document.getElementById("errMsg").innerHTML = "Enter the blogger data"
+        } else {
+          document.getElementById("errMsg").value = ""
+          console.log(document.getElementById("fname"))
+          console.log(document.getElementById("textArea"))
+          var textArea = document.getElementById("textArea")
+          var arrayOfLines = textArea.value.split("\n")
+          var arrayOfHrefs = new Array()
+          var arrayOfLinks = new Array()
+          for(var i = 2; i < arrayOfLines.length ; i+=3){
+            arrayOfHrefs.push(arrayOfLines[i])
           }
-          var newLink = {}
-          newLink['name'] = "name"
-          newLink['url'] = link
-          arrayOfLinks.push(newLink)
-        });
+          var linkOn = false
+          arrayOfHrefs.pop()
+          arrayOfHrefs.forEach(element => {
+            var link = ""
+            for(var j = 0; j < element.length; j++){
+              var c = element[j]
+              if(linkOn && c !== "\"") {
+                link += c
+              }
+              if(c === "\"") {
+                if(linkOn === true) linkOn = false;
+                else linkOn = true
+                if(linkOn === false) break
+              }
+            }
+            var newLink = {}
+            newLink['name'] = "name"
+            newLink['url'] = link
+            arrayOfLinks.push(newLink)
+          });
 
-        var entireJSON = {};
-        entireJSON['num'] = 5
-        entireJSON['links'] = arrayOfLinks
-        
-        console.log(JSON.stringify(entireJSON))
+          var entireJSON = {}
+          entireJSON['num'] = 5
+          entireJSON['links'] = arrayOfLinks
+          
+          console.log(JSON.stringify(entireJSON))
+          saveFile(document.getElementById("fname").value + '.json', JSON.stringify(entireJSON, null, 2))
+        }
+      }
+      function saveFile (filename, data) {
+        var blob = new Blob([data], {type: 'text/csv'});
+        if(window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveBlob(blob, filename);
+        }
+        else{
+            var elem = window.document.createElement('a');
+            elem.href = window.URL.createObjectURL(blob);
+            elem.download = filename;        
+            document.body.appendChild(elem);
+            elem.click();        
+            document.body.removeChild(elem);
+        }
       }
     </script>
   </head>
@@ -57,6 +83,16 @@
           <textarea id="textArea" rows="10" class="textarea is-hovered" placeholder="Enter blogger HTML text"></textarea>
       </div>
       </br>
+      File name : 
+      <div class="field">
+          <div class="control">
+            <span>
+              <input id="fname" class="input is-info" type="text" placeholder="filename" style="width: 150px;">
+                .json
+            </span>
+          </div>
+        </div>
+      </br>
       <a onclick="stringToJSON()" class="button is-success is-large">
           <span class="icon is-small">
             <i class="fas fa-download"></i>
@@ -64,6 +100,8 @@
           <span>Get JSON</span>
         </a>
     </div>
+    <br>
+    <p id="errMsg" class="content is-medium" style="color:red"></p>
   </section>
   </body>
 </html>
