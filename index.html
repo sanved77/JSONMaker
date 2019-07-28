@@ -8,10 +8,10 @@
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <script>
       function stringToJSON () {
-        var textArea = document.getElementById("textArea");
-        var arrayOfLines = textArea.value.split("\n");
-        var arrayOfHrefs = new Array();
-        var arrayOfLinks = new Array();
+        var textArea = document.getElementById("textArea")
+        var arrayOfLines = textArea.value.split("\n")
+        var arrayOfHrefs = new Array()
+        var arrayOfLinks = new Array()
         for(var i = 2; i < arrayOfLines.length ; i+=3){
           arrayOfHrefs.push(arrayOfLines[i])
         }
@@ -26,17 +26,21 @@
             }
             if(c === "\"") {
               if(linkOn === true) linkOn = false;
-              else linkOn = true;
-              if(linkOn === false) {
-                console.log('lenduk')
-                break
-              }
+              else linkOn = true
+              if(linkOn === false) break
             }
           }
-          arrayOfLinks.push(link)
+          var newLink = {}
+          newLink['name'] = "name"
+          newLink['url'] = link
+          arrayOfLinks.push(newLink)
         });
 
-        console.log(arrayOfLinks)
+        var entireJSON = {};
+        entireJSON['num'] = 5
+        entireJSON['links'] = arrayOfLinks
+        
+        console.log(JSON.stringify(entireJSON))
       }
     </script>
   </head>
