@@ -8,8 +8,35 @@
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <script>
       function stringToJSON () {
-        var dhuski = document.getElementById("textArea").value
-        console.log(dhuski)
+        var textArea = document.getElementById("textArea");
+        var arrayOfLines = textArea.value.split("\n");
+        var arrayOfHrefs = new Array();
+        var arrayOfLinks = new Array();
+        for(var i = 2; i < arrayOfLines.length ; i+=3){
+          arrayOfHrefs.push(arrayOfLines[i])
+        }
+        var linkOn = false
+        arrayOfHrefs.pop()
+        arrayOfHrefs.forEach(element => {
+          var link = ""
+          for(var j = 0; j < element.length; j++){
+            var c = element[j]
+            if(linkOn && c !== "\"") {
+              link += c
+            }
+            if(c === "\"") {
+              if(linkOn === true) linkOn = false;
+              else linkOn = true;
+              if(linkOn === false) {
+                console.log('lenduk')
+                break
+              }
+            }
+          }
+          arrayOfLinks.push(link)
+        });
+
+        console.log(arrayOfLinks)
       }
     </script>
   </head>
@@ -28,7 +55,7 @@
       </br>
       <a onclick="stringToJSON()" class="button is-success is-large">
           <span class="icon is-small">
-            <i class="fas fa-check"></i>
+            <i class="fas fa-download"></i>
           </span>
           <span>Get JSON</span>
         </a>
